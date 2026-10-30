@@ -37,8 +37,12 @@ export default function App() {
 
   async function complete(id: string) {
     if (!API || !token) return
-    const r = await fetch(`${API}/challenges/${id}/complete`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } })
-    setMsg(r.ok ? 'تم تسجيل الإنجاز' : 'تعذر تسجيل الإنجاز'); load()
+    const reasons: Record<number, string> = { 401: 'انتهت الجلسة، سجّل الدخول مجددًا', 404: 'التحدي غير متاح', 409: 'أنجزت هذا التحدي من قبل', 410: 'انتهى هذا التحدي', 429: 'محاولات كثيرة، انتظر قليلًا' }
+    try {
+      const r = await fetch(`${API}/challenges/${id}/complete`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } })
+      setMsg(r.ok ? 'تم تسجيل الإنجاز' : reasons[r.status] ?? 'تعذر تسجيل الإنجاز')
+    } catch { setMsg('تعذر الاتصال بالخادم') }
+    load()
   }
 
   const tabs = [['ch', 'التحديات'], ['lb', 'المتصدرون'], ['me', 'إنجازاتي']] as const
