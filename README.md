@@ -17,7 +17,9 @@
 
 - شغّل [supabase/arena_student_onboarding.sql](./supabase/arena_student_onboarding.sql) في SQL Editor. الدالة تنشئ أو تكمل ملف الطالب للمستخدم المسجّل فقط، وتسمح له باختيار صفه؛ ولا تسمح بتغيير أعلام المعلم أو المشرف.
 - في Supabase → Authentication → Sign In / Providers، فعّل Google واحتفظ بـ **Google Client Secret داخل لوحة Supabase فقط**؛ لا تضفه إلى `assets/config.js` أو ملفات الموقع.
-- في Google Cloud OAuth Client، أضف Authorized redirect URI التالي: `https://zugwicbbfbefbbwugfxq.supabase.co/auth/v1/callback`. أضف نطاق الموقع المنشور إلى Supabase Authentication → URL Configuration → Redirect URLs، مثل `https://arena.ilogia-eg.com/**` و`https://mo-2012.github.io/arena---ilogia/**` عند استخدام GitHub Pages. يحتفظ الموقع بمساره الحالي عند العودة من Google بدل الرجوع إلى الصفحة الرئيسية.
+- في Google Cloud OAuth Client، أضف Authorized redirect URI التالي: `https://zugwicbbfbefbbwugfxq.supabase.co/auth/v1/callback`.
+- في Supabase → Authentication → URL Configuration، اضبط **Site URL** على `https://arena.ilogia-eg.com/` وأضف `https://arena.ilogia-eg.com/` إلى **Redirect URLs**. لا تجعل `ilogia-eg.com` هو عنوان الرجوع الخاص بـArena؛ Supabase يرجع إليه إذا لم يكن عنوان Arena مسموحًا. وللتطوير المحلي أضف عنوان localhost الفعلي المستخدم.
+- زر Google يطلب الرجوع مباشرة إلى `https://arena.ilogia-eg.com/`، ثم يكمل الموقع تبادل الرمز ويعرض ملف الطالب داخل Arena. لن يرجع إلى `ilogia-eg.com` الرئيسي. يلزم نشر التعديل وضبط عناوين Supabase أعلاه حتى يصبح هذا السلوك فعالًا.
 - سجّل الطالب من زر Google داخل ilogia Arena. Supabase يعيد المستخدم الموجود عند تطابق حساب Google الموثّق مع الهوية المرتبطة؛ المستخدم الجديد يُنشأ في Supabase Auth. إذا لم يكن لديه ملف طالب، تظهر له قائمة الصفوف، وبعد اختياره يُنشأ ملفه الأساسي بنفس UUID في `profiles`.
 - البريد وكلمة المرور يظلان متاحين كخيار إضافي. بعد تسجيل الدخول يقرأ الموقع ملف الطالب ونقاطه من Supabase؛ لا يرسل الطالب إلى الموقع الرئيسي لتسجيل الدخول.
 - زر «تسجيل الخروج» ينهي جلسة Supabase. الجلسة محفوظة في المتصفح لتبقى بعد تحديث الصفحة.
