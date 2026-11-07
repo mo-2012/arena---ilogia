@@ -30,7 +30,7 @@ async function startGoogleSignIn(button){
   const digest=await window.crypto.subtle.digest("SHA-256",new TextEncoder().encode(verifier));
   const authorize=new URL(authEndpoint("authorize"));
   const isLocalHost=["localhost","127.0.0.1"].includes(location.hostname);
-  const redirectTo=isLocalHost?`${location.origin}${location.pathname}`:"https://arena.ilogia-eg.com/";
+  const redirectTo=isLocalHost?`${location.origin}${location.pathname}`:"https://arena.ilogia-eg.com";
   authorize.search=new URLSearchParams({provider:"google",redirect_to:redirectTo,code_challenge:base64Url(new Uint8Array(digest)),code_challenge_method:"s256"}).toString();
   window.sessionStorage.setItem(OAUTH_VERIFIER_KEY,verifier);
   location.assign(authorize.toString());
